@@ -58,12 +58,12 @@ public class DrivetrainSubsystem implements Subsystem, UpdateManager.Updatable {
             new Vector2(-TRACKWIDTH / 2.0, -WHEELBASE / 2.0)        //back right
     );
 
-    private final SwerveDriveKinematics wpi_driveKinematics = new SwerveDriveKinematics(
-            new Translation2d(-TRACKWIDTH / 2.0, WHEELBASE / 2.0), //front left
-            new Translation2d(TRACKWIDTH / 2.0, WHEELBASE / 2.0), //front right
-            new Translation2d(-TRACKWIDTH / 2.0, -WHEELBASE / 2.0), // back left
-            new Translation2d(TRACKWIDTH / 2.0, -WHEELBASE / 2.0) // back right
-    );
+    // private final SwerveDriveKinematics wpi_driveKinematics = new SwerveDriveKinematics(
+    //         new Translation2d(-TRACKWIDTH / 2.0, WHEELBASE / 2.0), //front left
+    //         new Translation2d(TRACKWIDTH / 2.0, WHEELBASE / 2.0), //front right
+    //         new Translation2d(-TRACKWIDTH / 2.0, -WHEELBASE / 2.0), // back left
+    //         new Translation2d(TRACKWIDTH / 2.0, -WHEELBASE / 2.0) // back right
+    // );
 
 
     private final SwerveModule[] modules;
@@ -107,9 +107,9 @@ public class DrivetrainSubsystem implements Subsystem, UpdateManager.Updatable {
                         .withSize(2, 4),
                 Mk4SwerveModuleHelper.GearRatio.L4,
                 Constants.DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR,
-                Constants.DRIVETRAIN_FRONT_LEFT_ANGLE_MOTOR,
-                Constants.DRIVETRAIN_FRONT_LEFT_ENCODER_PORT,
-                Constants.DRIVETRAIN_FRONT_LEFT_ENCODER_OFFSET
+                Constants.DRIVETRAIN_FRONT_LEFT_STEER_MOTOR,
+                Constants.DRIVETRAIN_FRONT_LEFT_STEER_ENCODER,
+                Constants.DRIVETRAIN_FRONT_LEFT_STEER_OFFSET
         );
         SwerveModule frontRightModule = Mk4SwerveModuleHelper.createFalcon500(
                 tab.getLayout("Front Right Module", BuiltInLayouts.kList)
@@ -117,9 +117,9 @@ public class DrivetrainSubsystem implements Subsystem, UpdateManager.Updatable {
                         .withSize(2, 4),
                 Mk4SwerveModuleHelper.GearRatio.L4,
                 Constants.DRIVETRAIN_FRONT_RIGHT_DRIVE_MOTOR,
-                Constants.DRIVETRAIN_FRONT_RIGHT_ANGLE_MOTOR,
-                Constants.DRIVETRAIN_FRONT_RIGHT_ENCODER_PORT,
-                Constants.DRIVETRAIN_FRONT_RIGHT_ENCODER_OFFSET
+                Constants.DRIVETRAIN_FRONT_RIGHT_STEER_MOTOR,
+                Constants.DRIVETRAIN_FRONT_RIGHT_STEER_ENCODER,
+                Constants.DRIVETRAIN_FRONT_RIGHT_STEER_OFFSET
         );
         SwerveModule backLeftModule = Mk4SwerveModuleHelper.createFalcon500(
                 tab.getLayout("Back Left Module", BuiltInLayouts.kList)
@@ -127,9 +127,9 @@ public class DrivetrainSubsystem implements Subsystem, UpdateManager.Updatable {
                         .withSize(2, 4),
                 Mk4SwerveModuleHelper.GearRatio.L4,
                 Constants.DRIVETRAIN_BACK_LEFT_DRIVE_MOTOR,
-                Constants.DRIVETRAIN_BACK_LEFT_ANGLE_MOTOR,
-                Constants.DRIVETRAIN_BACK_LEFT_ENCODER_PORT,
-                Constants.DRIVETRAIN_BACK_LEFT_ENCODER_OFFSET
+                Constants.DRIVETRAIN_BACK_LEFT_STEER_MOTOR,
+                Constants.DRIVETRAIN_BACK_LEFT_STEER_ENCODER,
+                Constants.DRIVETRAIN_BACK_LEFT_STEER_OFFSET
         );
         SwerveModule backRightModule = Mk4SwerveModuleHelper.createFalcon500(
                 tab.getLayout("Back Right Module", BuiltInLayouts.kList)
@@ -137,9 +137,9 @@ public class DrivetrainSubsystem implements Subsystem, UpdateManager.Updatable {
                         .withSize(2, 4),
                 Mk4SwerveModuleHelper.GearRatio.L4,
                 Constants.DRIVETRAIN_BACK_RIGHT_DRIVE_MOTOR,
-                Constants.DRIVETRAIN_BACK_RIGHT_ANGLE_MOTOR,
-                Constants.DRIVETRAIN_BACK_RIGHT_ENCODER_PORT,
-                Constants.DRIVETRAIN_BACK_RIGHT_ENCODER_OFFSET
+                Constants.DRIVETRAIN_BACK_RIGHT_STEER_MOTOR,
+                Constants.DRIVETRAIN_BACK_RIGHT_STEER_ENCODER,
+                Constants.DRIVETRAIN_BACK_RIGHT_STEER_OFFSET
         );
 
         modules = new SwerveModule[]{frontLeftModule, frontRightModule, backLeftModule, backRightModule};

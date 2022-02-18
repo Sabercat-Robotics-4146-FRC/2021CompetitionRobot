@@ -3,12 +3,10 @@ package org.frcteam2910.c2020;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import org.frcteam2910.c2020.commands.*;
 import org.frcteam2910.common.Logger;
 import org.frcteam2910.common.math.RigidTransform2;
 import org.frcteam2910.common.math.Rotation2;
 import org.frcteam2910.common.robot.UpdateManager;
-import org.frcteam2910.common.robot.drivers.Limelight;
 
 import java.io.IOException;
 import java.net.NetworkInterface;
@@ -34,10 +32,7 @@ public class Robot extends TimedRobot {
 
     private RobotContainer robotContainer = new RobotContainer();
     private UpdateManager updateManager = new UpdateManager(
-            robotContainer.getDrivetrainSubsystem(),
-            robotContainer.getFeederSubsystem(),
-            robotContainer.getIntakeSubsystem(),
-            robotContainer.getShooterSubsystem()
+            robotContainer.getDrivetrainSubsystem()
     );
 
     static {
@@ -178,9 +173,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousInit() {
-        new HomeHoodMotorCommand(robotContainer.getShooterSubsystem()).schedule();
 
-        robotContainer.getVisionSubsystem().setLedMode(Limelight.LedMode.DEFAULT);
         robotContainer.getDrivetrainSubsystem().resetPose(RigidTransform2.ZERO);
         //robotContainer.getDrivetrainSubsystem().resetGyroAngle(Rotation2.ZERO);
 
@@ -204,10 +197,5 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
-        if(!robotContainer.getShooterSubsystem().isHoodHomed()){
-            new HomeHoodMotorCommand(robotContainer.getShooterSubsystem()).schedule();
-        }
-
-        new HomeClimberCommand(robotContainer.getClimberSubsystem(), robotContainer.getSuperstructure()).schedule();
     }
 }

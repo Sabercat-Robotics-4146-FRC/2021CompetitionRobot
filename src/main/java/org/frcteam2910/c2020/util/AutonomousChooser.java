@@ -4,9 +4,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import org.frcteam2910.c2020.RobotContainer;
-import org.frcteam2910.c2020.commands.*;
 import org.frcteam2910.common.control.Trajectory;
 import org.frcteam2910.common.math.RigidTransform2;
 import org.frcteam2910.common.math.Rotation2;
@@ -45,7 +43,6 @@ public class AutonomousChooser {
 
         //reset robot pose
         resetRobotPose(command, container, trajectories.getEightBallAutoPartOne());
-        command.addCommands(new HomeHoodMotorCommand(container.getShooterSubsystem()));
         //follow first trajectory and shoot
         follow(command, container, trajectories.getEightBallAutoPartOne());
         shootAtTarget(command, container, 1.5);
@@ -64,7 +61,6 @@ public class AutonomousChooser {
 
         //reset robot pose
         resetRobotPose(command, container, trajectories.getEightBallCompatiblePartOne());
-        command.addCommands(new HomeHoodMotorCommand(container.getShooterSubsystem()));
         //follow first trajectory and shoot
         follow(command, container, trajectories.getEightBallCompatiblePartOne());
         shootAtTarget(command, container, 1.5);
@@ -100,7 +96,6 @@ public class AutonomousChooser {
         SequentialCommandGroup command = new SequentialCommandGroup();
 
         resetRobotPose(command, container, trajectories.getSimpleShootThree());
-        command.addCommands(new HomeHoodMotorCommand(container.getShooterSubsystem()));
 
         shootAtTarget(command, container);
         follow(command, container, trajectories.getSimpleShootThree());
@@ -130,32 +125,12 @@ public class AutonomousChooser {
     }
 
     private void shootAtTarget(SequentialCommandGroup command, RobotContainer container, double timeToWait) {
-        command.addCommands(
-                new TargetWithShooterCommand(container.getShooterSubsystem(), container.getVisionSubsystem(), container.getPrimaryController())
-                        .alongWith(new VisionRotateToTargetCommand(container.getDrivetrainSubsystem(), container.getVisionSubsystem(), () -> 0.0, () -> 0.0))
-                        .alongWith(
-                                new WaitCommand(0.1).andThen(new AutonomousFeedCommand(container.getShooterSubsystem(), container.getFeederSubsystem(), container.getVisionSubsystem())))
-                        .withTimeout(timeToWait));
     }
 
     private void follow(SequentialCommandGroup command, RobotContainer container, Trajectory trajectory) {
-        command.addCommands(new FollowTrajectoryCommand(container.getDrivetrainSubsystem(), trajectory)
-                .deadlineWith(new TargetWithShooterCommand(container.getShooterSubsystem(), container.getVisionSubsystem(), container.getPrimaryController()))
-                .alongWith(new PrepareBallsToShootCommand(container.getFeederSubsystem(), 1.0)));
     }
 
     private void followAndIntake(SequentialCommandGroup command, RobotContainer container, Trajectory trajectory) {
-        command.addCommands(new InstantCommand(() -> container.getIntakeSubsystem().setTopExtended(true)));
-        command.addCommands(
-                new FollowTrajectoryCommand(container.getDrivetrainSubsystem(), trajectory)
-                        .deadlineWith(
-                                new IntakeCommand(container.getIntakeSubsystem(), container.getFeederSubsystem(), -1.0).withTimeout(0.25)
-                                        .andThen(
-                                                new IntakeCommand(container.getIntakeSubsystem(), container.getFeederSubsystem(), 1.0)
-                                                        .alongWith(
-                                                                new FeederIntakeWhenNotFullCommand(container.getFeederSubsystem(), 1.0)
-                                                        ))));
-        command.addCommands(new InstantCommand(() -> container.getIntakeSubsystem().setTopExtended(false)));
     }
 
     private void resetRobotPose(SequentialCommandGroup command, RobotContainer container, Trajectory trajectory) {
